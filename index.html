@@ -1,274 +1,2300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Investment Analytics Platform</title>
+    <title>Investment Analytics Platform | Market & Securities Analytics</title>
 
     <meta name="description"
-          content="Interactive investment analytics platform built with Power BI, DAX, Power Query, Python, and Deneb/Vega-Lite using Yahoo Finance data.">
+          content="Investment Analytics Platform — an end-to-end financial analytics project using Yahoo Finance data, Python, Power Query, DAX, Power BI and Deneb/Vega-Lite.">
+
+    <meta name="author" content="Sothea Nguon">
 
     <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                Helvetica,
+                sans-serif;
+
             background: #f5f7fb;
             color: #172554;
             line-height: 1.6;
         }
 
+        a {
+            color: inherit;
+        }
+
         .container {
             width: min(1180px, 92%);
-            margin: auto;
+            margin: 0 auto;
         }
 
-        header {
-            background: linear-gradient(135deg, #0f4cbd, #168df5);
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .nav-inner {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .brand {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f2a66;
+            text-decoration: none;
+            letter-spacing: -0.3px;
+        }
+
+        .brand span {
+            color: #2563eb;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+
+            transition:
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
             color: white;
-            padding: 90px 0;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(96,165,250,0.35),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0b2e75 0%,
+                    #1557c0 48%,
+                    #168df5 100%
+                );
+
+            padding: 105px 0 95px;
         }
 
-        header h1 {
-            font-size: clamp(42px, 6vw, 72px);
-            line-height: 1.05;
-            margin-bottom: 24px;
+        .hero::after {
+            content: "";
+
+            position: absolute;
+            width: 420px;
+            height: 420px;
+
+            right: -160px;
+            bottom: -220px;
+
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 0 70px rgba(255,255,255,0.04),
+                0 0 0 140px rgba(255,255,255,0.025);
         }
 
-        header p {
-            font-size: 21px;
-            max-width: 780px;
-            opacity: 0.95;
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 850px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 22px;
+
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+
+            color: #dbeafe;
+        }
+
+        .eyebrow::before {
+            content: "";
+
+            width: 28px;
+            height: 2px;
+
+            background: #bfdbfe;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: 1.02;
+            letter-spacing: -2.5px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            display: block;
+            color: #bfdbfe;
+        }
+
+        .hero-description {
+            max-width: 790px;
+
+            font-size: clamp(18px, 2vw, 21px);
+            line-height: 1.7;
+
+            color: #eff6ff;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+
+            margin-top: 35px;
         }
 
         .button {
-            display: inline-block;
-            margin-top: 32px;
-            padding: 14px 24px;
-            background: white;
-            color: #0f4cbd;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 14px 23px;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+            font-weight: 750;
+
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
         }
 
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            background: white;
+            color: #1557c0;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .button-secondary {
+            color: white;
+            background: rgba(255,255,255,0.10);
+
+            border: 1px solid rgba(255,255,255,0.35);
+        }
+
+        .button-secondary:hover {
+            background: rgba(255,255,255,0.17);
+        }
+
+
+        /* =========================================================
+           METRICS
+        ========================================================= */
+
+        .metrics {
+            margin-top: -38px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            background: white;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 18px 50px rgba(15,23,42,0.10);
+
+            border: 1px solid #e7ebf2;
+
+            overflow: hidden;
+        }
+
+        .metric {
+            padding: 27px 25px;
+
+            border-right: 1px solid #e7ebf2;
+
+            text-align: center;
+        }
+
+        .metric:last-child {
+            border-right: none;
+        }
+
+        .metric-value {
+            display: block;
+
+            font-size: 30px;
+            font-weight: 850;
+
+            color: #123b91;
+
+            margin-bottom: 3px;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+
+        /* =========================================================
+           SECTIONS
+        ========================================================= */
+
         section {
-            padding: 70px 0;
+            padding: 90px 0;
+        }
+
+        .section-light {
+            background: #ffffff;
+        }
+
+        .section-heading {
+            max-width: 760px;
+            margin-bottom: 45px;
+        }
+
+        .section-number {
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 850;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
         }
 
         h2 {
-            font-size: 34px;
-            margin-bottom: 20px;
+            color: #0f2454;
+
+            font-size: clamp(32px, 4vw, 45px);
+            line-height: 1.15;
+            letter-spacing: -1px;
+
+            margin-bottom: 16px;
         }
 
-        .intro {
-            max-width: 850px;
+        .section-description {
+            color: #64748b;
             font-size: 18px;
+            line-height: 1.75;
         }
+
+
+        /* =========================================================
+           OVERVIEW
+        ========================================================= */
+
+        .overview-layout {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 55px;
+            align-items: start;
+        }
+
+        .overview-text p {
+            color: #475569;
+            font-size: 17px;
+            line-height: 1.85;
+            margin-bottom: 18px;
+        }
+
+        .highlight-box {
+            background: #eff6ff;
+
+            border-left: 4px solid #2563eb;
+
+            padding: 25px 27px;
+
+            border-radius: 0 12px 12px 0;
+
+            color: #1e3a8a;
+            font-weight: 600;
+
+            margin-top: 28px;
+        }
+
+
+        /* =========================================================
+           ANALYTICAL CAPABILITIES
+        ========================================================= */
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            margin-top: 35px;
         }
 
         .card {
             background: white;
-            padding: 28px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-        }
 
-        .card h3 {
-            margin-bottom: 10px;
-        }
+            border: 1px solid #e4e9f1;
 
-        .tech {
-            font-weight: 700;
-            color: #0f4cbd;
-        }
-
-        .dashboard {
-            background: #ffffff;
             border-radius: 14px;
-            padding: 20px;
-            min-height: 500px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+
+            padding: 28px;
+
+            box-shadow:
+                0 7px 25px rgba(15,23,42,0.045);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
         }
 
-        .dashboard-placeholder {
-            min-height: 460px;
+        .card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 15px 35px rgba(15,23,42,0.09);
+
+            border-color: #bfdbfe;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #eef4fb;
+
+            margin-bottom: 20px;
+
             border-radius: 10px;
-            color: #64748b;
-            text-align: center;
-            padding: 30px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            font-weight: 850;
         }
 
-        .flow {
+        .card h3 {
+            color: #102a63;
+            font-size: 19px;
+
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 14.5px;
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           DASHBOARD DEMO
+        ========================================================= */
+
+        .dashboard-section {
+            background:
+                linear-gradient(
+                    180deg,
+                    #eef4ff 0%,
+                    #f5f7fb 100%
+                );
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 35px;
+        }
+
+        .dashboard-header .section-heading {
+            margin-bottom: 0;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 9px 13px;
+
             background: white;
-            padding: 30px;
+
+            border: 1px solid #dbe5f2;
+
+            border-radius: 999px;
+
+            color: #475569;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+        }
+
+        .video-card {
+            background: #ffffff;
+
+            padding: 14px;
+
+            border-radius: 20px;
+
+            border: 1px solid #e1e7ef;
+
+            box-shadow:
+                0 20px 55px rgba(15,23,42,0.12);
+        }
+
+        .demo-video {
+            display: block;
+
+            width: 100%;
+            height: auto;
+
+            max-height: 760px;
+
+            background: #0b1220;
+
             border-radius: 12px;
+        }
+
+        .video-note {
+            padding: 17px 8px 5px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           DASHBOARD PAGES
+        ========================================================= */
+
+        .dashboard-pages {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+
             margin-top: 30px;
-            font-weight: 600;
+        }
+
+        .dashboard-page {
+            position: relative;
+
+            padding: 28px;
+
+            background: white;
+
+            border: 1px solid #e1e7ef;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+        .dashboard-page::after {
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+            height: 80px;
+
+            right: -30px;
+            bottom: -30px;
+
+            border-radius: 50%;
+
+            border: 1px solid #dbeafe;
+        }
+
+        .page-number {
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 850;
+
+            letter-spacing: 1px;
+        }
+
+        .dashboard-page h3 {
+            color: #102a63;
+
+            margin: 10px 0 9px;
+
+            font-size: 20px;
+        }
+
+        .dashboard-page p {
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================================
+           ARCHITECTURE
+        ========================================================= */
+
+        .architecture {
+            background: white;
+
+            border: 1px solid #e3e8f0;
+
+            border-radius: 18px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 12px 35px rgba(15,23,42,0.055);
+
             overflow-x: auto;
         }
 
-        footer {
-            background: #0f172a;
-            color: white;
-            padding: 35px 0;
+        .architecture-flow {
+            min-width: 850px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+        }
+
+        .architecture-step {
+            min-width: 125px;
+
+            padding: 20px 14px;
+
+            text-align: center;
+
+            border-radius: 11px;
+
+            background: #f8fafc;
+
+            border: 1px solid #dfe7f1;
+        }
+
+        .architecture-step strong {
+            display: block;
+
+            color: #173b82;
+
+            font-size: 14px;
+
+            margin-bottom: 4px;
+        }
+
+        .architecture-step span {
+            color: #64748b;
+
+            font-size: 11px;
+        }
+
+        .arrow {
+            color: #2563eb;
+
+            font-size: 22px;
+
+            font-weight: 700;
+        }
+
+        .architecture-caption {
+            margin-top: 28px;
+
+            padding-top: 22px;
+
+            border-top: 1px solid #e5e7eb;
+
+            color: #64748b;
+
+            font-size: 14px;
+
             text-align: center;
         }
 
-        .source {
-            margin-top: 20px;
-            color: #64748b;
-            font-size: 14px;
+
+        /* =========================================================
+           WORKFLOW
+        ========================================================= */
+
+        .workflow-grid {
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 15px;
         }
+
+        .workflow-step {
+            position: relative;
+
+            padding: 25px 20px;
+
+            background: #f8fafc;
+
+            border-radius: 12px;
+
+            border: 1px solid #e3e8f0;
+        }
+
+        .workflow-step-number {
+            display: block;
+
+            color: #2563eb;
+
+            font-size: 12px;
+
+            font-weight: 850;
+
+            margin-bottom: 12px;
+        }
+
+        .workflow-step h3 {
+            color: #173b82;
+
+            font-size: 16px;
+
+            margin-bottom: 7px;
+        }
+
+        .workflow-step p {
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.65;
+        }
+
+
+        /* =========================================================
+           TECHNICAL SKILLS
+        ========================================================= */
+
+        .skills-layout {
+            display: grid;
+
+            grid-template-columns: 0.8fr 1.2fr;
+
+            gap: 60px;
+
+            align-items: start;
+        }
+
+        .skills-intro p {
+            color: #64748b;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        .skill-groups {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .skill-group {
+            padding: 25px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 13px;
+        }
+
+        .skill-group h3 {
+            color: #173b82;
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+        }
+
+        .skill-tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+
+            padding: 7px 10px;
+
+            background: white;
+
+            border: 1px solid #dbe3ee;
+
+            border-radius: 7px;
+
+            color: #475569;
+
+            font-size: 12px;
+
+            font-weight: 650;
+        }
+
+
+        /* =========================================================
+           CHALLENGES
+        ========================================================= */
+
+        .challenge-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .challenge {
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            border: 1px solid #e1e7ef;
+        }
+
+        .challenge-label {
+            display: inline-block;
+
+            margin-bottom: 13px;
+
+            padding: 5px 9px;
+
+            border-radius: 6px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            font-size: 10px;
+
+            font-weight: 850;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+        }
+
+        .challenge h3 {
+            color: #102a63;
+
+            font-size: 18px;
+
+            margin-bottom: 10px;
+        }
+
+        .challenge p {
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
+           OUTCOME
+        ========================================================= */
+
+        .outcome {
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b2e75,
+                    #1557c0
+                );
+
+            color: white;
+
+            border-radius: 20px;
+
+            padding: 55px;
+
+            box-shadow:
+                0 20px 50px rgba(15,23,42,0.16);
+        }
+
+        .outcome h2 {
+            color: white;
+
+            margin-bottom: 18px;
+        }
+
+        .outcome p {
+            max-width: 850px;
+
+            color: #dbeafe;
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        .outcome-points {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-top: 32px;
+        }
+
+        .outcome-point {
+            padding: 17px;
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,0.09);
+
+            border: 1px solid rgba(255,255,255,0.14);
+
+            color: #eff6ff;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+
+        /* =========================================================
+           DISCLOSURE
+        ========================================================= */
+
+        .disclosure {
+            padding: 25px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        .disclosure strong {
+            color: #334155;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            margin-top: 30px;
+
+            background: #0b1220;
+
+            color: white;
+
+            padding: 45px 0;
+        }
+
+        .footer-content {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        .footer-title {
+            font-weight: 800;
+
+            font-size: 17px;
+
+            margin-bottom: 5px;
+        }
+
+        .footer-subtitle {
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 650;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            margin-top: 28px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid rgba(255,255,255,0.10);
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           BACK TO TOP
+        ========================================================= */
+
+        .back-top {
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2563eb;
+
+            color: white;
+
+            border-radius: 50%;
+
+            text-decoration: none;
+
+            font-size: 18px;
+
+            box-shadow:
+                0 8px 25px rgba(37,99,235,0.30);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+
+            z-index: 999;
+        }
+
+        .back-top:hover {
+            transform: translateY(-3px);
+
+            background: #1d4ed8;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .workflow-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .outcome-points {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .overview-layout,
+            .skills-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 760px) {
+
+            .nav-inner {
+                min-height: 60px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 75px 0 80px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            section {
+                padding: 65px 0;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metric:nth-child(2) {
+                border-right: none;
+            }
+
+            .metric:nth-child(-n+2) {
+                border-bottom: 1px solid #e7ebf2;
+            }
+
+            .cards,
+            .dashboard-pages,
+            .challenge-grid,
+            .skill-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .outcome {
+                padding: 35px 25px;
+            }
+
+            .outcome-points {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metric {
+                border-right: none;
+                border-bottom: 1px solid #e7ebf2;
+            }
+
+            .metric:last-child {
+                border-bottom: none;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button {
+                width: 100%;
+            }
+
+        }
+
     </style>
+
 </head>
 
-<body>
 
-<header>
-    <div class="container">
+<body id="top">
 
-        <h1>Investment Analytics Platform</h1>
 
-        <p>
-            Interactive market, security and corporate events analytics
-            built to transform financial market data into decision-support
-            insights.
-        </p>
+<!-- =============================================================
+     NAVIGATION
+============================================================= -->
 
-        <a href="https://app.powerbi.com/groups/me/reports/b338aea0-542b-44ba-95df-6bcc9c4e7d4c/ce0e8dba5a55ceb6d67b?experience=power-bi&bookmarkGuid=f3a1bcd2e51aa08eea0b"
-   target="_blank"
-   rel="noopener noreferrer"
-   style="display:inline-block;
-          background:#2563eb;
-          color:white;
-          padding:14px 24px;
-          border-radius:8px;
-          text-decoration:none;
-          font-weight:600;
-          margin-top:20px;">
-    Explore Interactive Dashboard
-</a>
+<nav class="navbar">
+
+    <div class="container nav-inner">
+
+        <a href="#top" class="brand">
+            Investment <span>Analytics</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="#overview">Project</a>
+
+            <a href="#dashboard">Dashboard</a>
+
+            <a href="#architecture">Architecture</a>
+
+            <a href="#skills">Skills</a>
+
+            <a href="#challenges">Challenges</a>
+
+        </div>
 
     </div>
+
+</nav>
+
+
+
+<!-- =============================================================
+     HERO
+============================================================= -->
+
+<header class="hero">
+
+    <div class="container hero-content">
+
+        <div class="eyebrow">
+            Financial Analytics Portfolio
+        </div>
+
+        <h1>
+            Investment Analytics
+            <span>Platform</span>
+        </h1>
+
+        <p class="hero-description">
+
+            An end-to-end financial analytics project transforming
+            public market data into interactive insights for
+            performance analysis, security comparison, risk,
+            benchmark evaluation and corporate events.
+
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#dashboard"
+               class="button button-primary">
+
+                ▶ Watch Dashboard Demo
+
+            </a>
+
+            <a href="#architecture"
+               class="button button-secondary">
+
+                Explore Architecture →
+
+            </a>
+
+        </div>
+
+    </div>
+
 </header>
 
 
+
+<!-- =============================================================
+     PROJECT METRICS
+============================================================= -->
+
+<div class="metrics">
+
+    <div class="container">
+
+        <div class="metrics-grid">
+
+            <div class="metric">
+
+                <span class="metric-value">
+                    12
+                </span>
+
+                <span class="metric-label">
+                    Securities Analyzed
+                </span>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-value">
+                    10+
+                </span>
+
+                <span class="metric-label">
+                    Years of Market Data
+                </span>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-value">
+                    3
+                </span>
+
+                <span class="metric-label">
+                    Analytical Views
+                </span>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-value">
+                    End-to-End
+                </span>
+
+                <span class="metric-label">
+                    Analytics Workflow
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =============================================================
+     PROJECT OVERVIEW
+============================================================= -->
+
+<section id="overview"
+         class="section-light">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">
+                01 · Project Story
+            </span>
+
+            <h2>
+                From market data to decision-support insights
+            </h2>
+
+            <p class="section-description">
+
+                The project combines financial domain knowledge,
+                data preparation, analytical modeling and
+                interactive business intelligence into a single
+                investment analytics workflow.
+
+            </p>
+
+        </div>
+
+
+        <div class="overview-layout">
+
+            <div class="overview-text">
+
+                <p>
+
+                    Financial markets generate large volumes of
+                    historical price, trading and corporate-event
+                    data. The objective of this project was to
+                    transform that raw information into a structured
+                    analytical platform that makes market and
+                    security-level analysis easier to explore.
+
+                </p>
+
+                <p>
+
+                    The resulting solution brings together historical
+                    prices, returns, volume, benchmark-relative
+                    performance, risk measures, dividends, stock
+                    splits and corporate events within an interactive
+                    Power BI environment.
+
+                </p>
+
+                <div class="highlight-box">
+
+                    The project emphasizes the complete analytical
+                    lifecycle — from data acquisition and
+                    transformation through data modeling, DAX
+                    calculations, visualization and decision support.
+
+                </div>
+
+            </div>
+
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        P
+                    </div>
+
+                    <h3>
+                        Performance
+                    </h3>
+
+                    <p>
+                        Historical prices, returns, growth and
+                        benchmark-relative performance.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        R
+                    </div>
+
+                    <h3>
+                        Risk
+                    </h3>
+
+                    <p>
+                        Volatility, drawdown, beta and
+                        risk-adjusted performance analysis.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        B
+                    </div>
+
+                    <h3>
+                        Benchmark
+                    </h3>
+
+                    <p>
+                        Security performance evaluated relative
+                        to benchmark and market measures.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        C
+                    </div>
+
+                    <h3>
+                        Corporate Events
+                    </h3>
+
+                    <p>
+                        Dividend history, dividend growth,
+                        stock splits and event analysis.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     DASHBOARD DEMO
+============================================================= -->
+
+<section id="dashboard"
+         class="dashboard-section">
+
+    <div class="container">
+
+        <div class="dashboard-header">
+
+            <div class="section-heading">
+
+                <span class="section-number">
+                    02 · Dashboard Demonstration
+                </span>
+
+                <h2>
+                    Market & Securities Analytics
+                </h2>
+
+                <p class="section-description">
+
+                    A walkthrough of the Power BI dashboard
+                    demonstrating the analytical workflow across
+                    market performance, security analysis and
+                    corporate events.
+
+                </p>
+
+            </div>
+
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Demo Available
+
+            </div>
+
+        </div>
+
+
+        <!-- VIDEO -->
+
+        <div class="video-card">
+
+            <video
+                class="demo-video"
+                controls
+                preload="metadata">
+
+                <source
+                    src="assets/demo-video.mp4"
+                    type="video/mp4">
+
+                Your browser does not support video playback.
+
+            </video>
+
+            <div class="video-note">
+
+                Dashboard demonstration — Power BI report
+                maintained in a private environment.
+
+            </div>
+
+        </div>
+
+
+        <!-- THREE DASHBOARD PAGES -->
+
+        <div class="dashboard-pages">
+
+
+            <div class="dashboard-page">
+
+                <span class="page-number">
+                    01
+                </span>
+
+                <h3>
+                    Market Overview
+                </h3>
+
+                <p>
+
+                    Historical prices, returns, trading volume
+                    and cross-security performance comparison
+                    with dynamic filters.
+
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-page">
+
+                <span class="page-number">
+                    02
+                </span>
+
+                <h3>
+                    Security Analysis
+                </h3>
+
+                <p>
+
+                    Security-level performance and risk analysis
+                    designed to support deeper evaluation of
+                    individual securities.
+
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-page">
+
+                <span class="page-number">
+                    03
+                </span>
+
+                <h3>
+                    Corporate Events
+                </h3>
+
+                <p>
+
+                    Dividend activity, stock splits and
+                    corporate-event information integrated into
+                    the analytical workflow.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     ARCHITECTURE
+============================================================= -->
+
+<section id="architecture">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">
+                03 · Technical Architecture
+            </span>
+
+            <h2>
+                End-to-end analytics architecture
+            </h2>
+
+            <p class="section-description">
+
+                The solution connects public market data with
+                transformation, modeling, analytical calculations
+                and interactive visualization.
+
+            </p>
+
+        </div>
+
+
+        <div class="architecture">
+
+            <div class="architecture-flow">
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        Yahoo Finance
+                    </strong>
+
+                    <span>
+                        Public market data
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        Data Extraction
+                    </strong>
+
+                    <span>
+                        Python workflow
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        Transformation
+                    </strong>
+
+                    <span>
+                        Power Query
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        Data Model
+                    </strong>
+
+                    <span>
+                        Structured analytics
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        DAX Engine
+                    </strong>
+
+                    <span>
+                        Financial measures
+                    </span>
+
+                </div>
+
+
+                <div class="arrow">
+                    →
+                </div>
+
+
+                <div class="architecture-step">
+
+                    <strong>
+                        Power BI
+                    </strong>
+
+                    <span>
+                        Interactive reporting
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="architecture-caption">
+
+                Data → Transformation → Modeling → Analytics →
+                Visualization → Decision Support
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     METHODOLOGY
+============================================================= -->
+
+<section class="section-light">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">
+                04 · Methodology
+            </span>
+
+            <h2>
+                How the solution was built
+            </h2>
+
+            <p class="section-description">
+
+                The project follows a structured analytics development
+                process designed to maintain data quality, analytical
+                consistency and usability.
+
+            </p>
+
+        </div>
+
+
+        <div class="workflow-grid">
+
+
+            <div class="workflow-step">
+
+                <span class="workflow-step-number">
+                    01
+                </span>
+
+                <h3>
+                    Data Acquisition
+                </h3>
+
+                <p>
+
+                    Collect public historical market and
+                    corporate-event data.
+
+                </p>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <span class="workflow-step-number">
+                    02
+                </span>
+
+                <h3>
+                    Data Preparation
+                </h3>
+
+                <p>
+
+                    Clean, transform and structure the data
+                    for analytical use.
+
+                </p>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <span class="workflow-step-number">
+                    03
+                </span>
+
+                <h3>
+                    Data Modeling
+                </h3>
+
+                <p>
+
+                    Build an analytical model supporting
+                    flexible filtering and calculations.
+
+                </p>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <span class="workflow-step-number">
+                    04
+                </span>
+
+                <h3>
+                    Analytical Layer
+                </h3>
+
+                <p>
+
+                    Develop DAX measures for performance,
+                    risk and benchmark analysis.
+
+                </p>
+
+            </div>
+
+
+            <div class="workflow-step">
+
+                <span class="workflow-step-number">
+                    05
+                </span>
+
+                <h3>
+                    Visualization
+                </h3>
+
+                <p>
+
+                    Design interactive Power BI views and
+                    custom visualizations.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     TECHNICAL SKILLS
+============================================================= -->
+
+<section id="skills">
+
+    <div class="container">
+
+        <div class="skills-layout">
+
+
+            <div class="skills-intro">
+
+                <span class="section-number">
+                    05 · Technology Stack
+                </span>
+
+                <h2>
+                    Technical capabilities
+                </h2>
+
+                <p>
+
+                    The project combines financial analytics with
+                    modern business intelligence and data
+                    engineering techniques.
+
+                </p>
+
+            </div>
+
+
+            <div class="skill-groups">
+
+
+                <div class="skill-group">
+
+                    <h3>
+                        Business Intelligence
+                    </h3>
+
+                    <div class="skill-tags">
+
+                        <span class="skill-tag">
+                            Power BI
+                        </span>
+
+                        <span class="skill-tag">
+                            DAX
+                        </span>
+
+                        <span class="skill-tag">
+                            Data Modeling
+                        </span>
+
+                        <span class="skill-tag">
+                            Interactive Reporting
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="skill-group">
+
+                    <h3>
+                        Data Engineering
+                    </h3>
+
+                    <div class="skill-tags">
+
+                        <span class="skill-tag">
+                            Python
+                        </span>
+
+                        <span class="skill-tag">
+                            Power Query
+                        </span>
+
+                        <span class="skill-tag">
+                            Data Transformation
+                        </span>
+
+                        <span class="skill-tag">
+                            Data Validation
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="skill-group">
+
+                    <h3>
+                        Visualization
+                    </h3>
+
+                    <div class="skill-tags">
+
+                        <span class="skill-tag">
+                            Deneb
+                        </span>
+
+                        <span class="skill-tag">
+                            Vega-Lite
+                        </span>
+
+                        <span class="skill-tag">
+                            Dashboard Design
+                        </span>
+
+                        <span class="skill-tag">
+                            Data Storytelling
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="skill-group">
+
+                    <h3>
+                        Financial Analytics
+                    </h3>
+
+                    <div class="skill-tags">
+
+                        <span class="skill-tag">
+                            Returns
+                        </span>
+
+                        <span class="skill-tag">
+                            Risk Analysis
+                        </span>
+
+                        <span class="skill-tag">
+                            Benchmarking
+                        </span>
+
+                        <span class="skill-tag">
+                            Corporate Events
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     CHALLENGES & SOLUTIONS
+============================================================= -->
+
+<section id="challenges"
+         class="section-light">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">
+                06 · Problem Solving
+            </span>
+
+            <h2>
+                Challenges & solutions
+            </h2>
+
+            <p class="section-description">
+
+                Building the dashboard involved more than
+                visualization. The project required solving
+                practical data, modeling and user-experience
+                challenges.
+
+            </p>
+
+        </div>
+
+
+        <div class="challenge-grid">
+
+
+            <div class="challenge">
+
+                <span class="challenge-label">
+                    Challenge
+                </span>
+
+                <h3>
+                    Dynamic Analysis
+                </h3>
+
+                <p>
+
+                    Users need to analyze different securities,
+                    periods and market dimensions without
+                    rebuilding the report for each scenario.
+
+                </p>
+
+            </div>
+
+
+            <div class="challenge">
+
+                <span class="challenge-label">
+                    Solution
+                </span>
+
+                <h3>
+                    Dynamic Filters & Measures
+                </h3>
+
+                <p>
+
+                    Interactive filtering and DAX-based measures
+                    allow the analytical views to respond dynamically
+                    to user selections.
+
+                </p>
+
+            </div>
+
+
+            <div class="challenge">
+
+                <span class="challenge-label">
+                    Design
+                </span>
+
+                <h3>
+                    Analytical Clarity
+                </h3>
+
+                <p>
+
+                    The dashboard was organized into focused
+                    analytical views so users can move from
+                    market-level context to security-level
+                    analysis and corporate events.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
+     PROJECT OUTCOME
+============================================================= -->
+
 <section>
-    <div class="container">
-
-        <h2>Project Overview</h2>
-
-        <p class="intro">
-            This project develops an interactive investment analytics platform
-            for analyzing historical security performance, risk,
-            benchmark-relative returns, liquidity, dividends, stock splits,
-            and corporate events.
-        </p>
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>Performance</h3>
-                <p>
-                    Historical returns, annualized performance,
-                    active returns and growth analysis.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Risk</h3>
-                <p>
-                    Volatility, drawdown, beta and
-                    risk-adjusted performance analysis.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Benchmark</h3>
-                <p>
-                    Security performance compared with
-                    SPY and risk-free rate measures.
-                </p>
-            </div>
-
-            <div class="card">
-                <h3>Corporate Events</h3>
-                <p>
-                    Dividend history, dividend growth,
-                    stock splits and event analysis.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-
-<section>
-    <div class="container">
-
-        <h2>Project Architecture</h2>
-
-        <p class="intro">
-            The solution combines data preparation, data modeling,
-            analytical calculations and interactive visualization.
-        </p>
-
-        <div class="flow">
-
-            Financial Data
-            →
-            Python / Power Query
-            →
-            Data Validation
-            →
-            Data Model
-            →
-            DAX Analytical Engine
-            →
-            Power BI / Deneb
-            →
-            Interactive Dashboard
-
-        </div>
-
-    </div>
-</section>
-
-
-<section id="dashboard">
 
     <div class="container">
 
-        <h2>Interactive Dashboard</h2>
+        <div class="outcome">
 
-        <p class="intro">
-            Explore the interactive Power BI report to analyze market
-            performance, security risk and corporate events.
-        </p>
+            <span class="section-number"
+                  style="color:#bfdbfe;">
 
-        <div class="dashboard">
+                07 · Project Outcome
 
-            <div class="dashboard-placeholder">
+            </span>
 
-                LIVE POWER BI REPORT WILL BE EMBEDDED HERE
+            <h2>
+                An end-to-end financial analytics solution
+            </h2>
+
+            <p>
+
+                The Investment Analytics Platform demonstrates how
+                public market data can be transformed into a
+                structured, interactive analytical product. The
+                project brings together financial knowledge,
+                data preparation, analytical modeling, DAX,
+                visualization and business intelligence into a
+                single workflow.
+
+            </p>
+
+
+            <div class="outcome-points">
+
+                <div class="outcome-point">
+                    Market Performance Analysis
+                </div>
+
+                <div class="outcome-point">
+                    Security Risk & Return
+                </div>
+
+                <div class="outcome-point">
+                    Benchmark Comparison
+                </div>
+
+                <div class="outcome-point">
+                    Corporate Event Analysis
+                </div>
 
             </div>
 
@@ -279,43 +2305,27 @@
 </section>
 
 
-<section>
+
+<!-- =============================================================
+     DISCLOSURE
+============================================================= -->
+
+<section style="padding-top:0;">
 
     <div class="container">
 
-        <h2>Technology Stack</h2>
+        <div class="disclosure">
 
-        <div class="cards">
+            <strong>
+                Data & access note:
+            </strong>
 
-            <div class="card">
-                <h3 class="tech">Power BI</h3>
-                <p>Interactive reporting and dashboard development.</p>
-            </div>
-
-            <div class="card">
-                <h3 class="tech">DAX</h3>
-                <p>Financial performance, risk and benchmark calculations.</p>
-            </div>
-
-            <div class="card">
-                <h3 class="tech">Power Query</h3>
-                <p>Data transformation and preparation.</p>
-            </div>
-
-            <div class="card">
-                <h3 class="tech">Python</h3>
-                <p>Data transformation within the analytical workflow.</p>
-            </div>
-
-            <div class="card">
-                <h3 class="tech">Deneb / Vega-Lite</h3>
-                <p>Custom interactive financial visualization.</p>
-            </div>
-
-            <div class="card">
-                <h3 class="tech">Data Modeling</h3>
-                <p>Fact and dimension architecture for analytical reporting.</p>
-            </div>
+            This project uses publicly available market data from
+            Yahoo Finance for analytical and portfolio demonstration
+            purposes. The Power BI report is maintained in a private
+            environment, so this portfolio presents the dashboard
+            through a demonstration video rather than a public
+            Power BI embed.
 
         </div>
 
@@ -323,23 +2333,84 @@
 
 </section>
 
+
+
+<!-- =============================================================
+     FOOTER
+============================================================= -->
 
 <footer>
 
     <div class="container">
 
-        <p>
-            Investment Analytics Platform
-        </p>
+        <div class="footer-content">
 
-        <p class="source">
-            Data source: Yahoo Finance. Data is used for analytical
-            and portfolio demonstration purposes.
-        </p>
+
+            <div>
+
+                <div class="footer-title">
+                    Investment Analytics Platform
+                </div>
+
+                <div class="footer-subtitle">
+                    Market & Securities Analytics
+                </div>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="#overview">
+                    Project
+                </a>
+
+                <a href="#dashboard">
+                    Dashboard
+                </a>
+
+                <a href="#skills">
+                    Skills
+                </a>
+
+                <a href="#top">
+                    Back to Top
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 Sothea Nguon · Independent Financial Analytics Project
+
+            <br><br>
+
+            Data source: Yahoo Finance
+
+        </div>
 
     </div>
 
 </footer>
+
+
+
+<!-- =============================================================
+     BACK TO TOP
+============================================================= -->
+
+<a href="#top"
+   class="back-top"
+   aria-label="Back to top">
+
+    ↑
+
+</a>
+
 
 </body>
 </html>
