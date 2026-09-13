@@ -953,6 +953,57 @@
 
 
         /* =========================================================
+           KEY INSIGHTS
+        ========================================================= */
+
+        .insights-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+        }
+
+        .insight-card {
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 14px;
+
+            padding: 30px;
+        }
+
+        .insight-stat {
+            font-size: 32px;
+            font-weight: 850;
+
+            color: #123b91;
+
+            letter-spacing: -0.5px;
+
+            margin-bottom: 6px;
+        }
+
+        .insight-label {
+            color: #2563eb;
+
+            font-size: 12.5px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+
+            margin-bottom: 14px;
+        }
+
+        .insight-card p {
+            color: #475569;
+
+            font-size: 14.5px;
+            line-height: 1.75;
+        }
+
+
+        /* =========================================================
            CHALLENGES
         ========================================================= */
 
@@ -1224,7 +1275,8 @@
 
         @media (max-width: 1000px) {
 
-            .cards {
+            .cards,
+            .insights-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
@@ -1280,6 +1332,7 @@
 
             .cards,
             .dashboard-pages,
+            .insights-grid,
             .challenge-grid,
             .skill-groups {
                 grid-template-columns: 1fr;
@@ -1364,6 +1417,8 @@
 
                 <a href="#dashboard">Dashboard</a>
 
+                <a href="#insights">Insights</a>
+
                 <a href="#architecture">Architecture</a>
 
                 <a href="#skills">Skills</a>
@@ -1419,10 +1474,13 @@
 
         <p class="hero-description">
 
-            An end-to-end financial analytics project transforming
-            public market data into interactive insights for
-            performance analysis, security comparison, risk,
-            benchmark evaluation and corporate events.
+            A raw return tells you almost nothing on its own — a
+            security up 500% could have taken a far riskier path than
+            one up 200%. This platform turns two decades of public
+            market data on 13 securities into a single analytical
+            model that pairs return with risk, benchmark context and
+            corporate actions, so performance can be judged properly
+            instead of at face value.
 
         </p>
 
@@ -1472,11 +1530,11 @@
             <div class="metric">
 
                 <span class="metric-value">
-                    12
+                    13
                 </span>
 
                 <span class="metric-label">
-                    Securities Analyzed
+                    Securities Tracked
                 </span>
 
             </div>
@@ -1485,11 +1543,24 @@
             <div class="metric">
 
                 <span class="metric-value">
-                    10+
+                    20
                 </span>
 
                 <span class="metric-label">
-                    Years of Market Data
+                    Years of Market History
+                </span>
+
+            </div>
+
+
+            <div class="metric">
+
+                <span class="metric-value">
+                    74,829%
+                </span>
+
+                <span class="metric-label">
+                    Top Security Return (NVDA)
                 </span>
 
             </div>
@@ -1502,20 +1573,7 @@
                 </span>
 
                 <span class="metric-label">
-                    Analytical Views
-                </span>
-
-            </div>
-
-
-            <div class="metric">
-
-                <span class="metric-value">
-                    End-to-End
-                </span>
-
-                <span class="metric-label">
-                    Analytics Workflow
+                    Interactive Report Pages
                 </span>
 
             </div>
@@ -1565,22 +1623,27 @@
 
                 <p>
 
-                    Financial markets generate large volumes of
-                    historical price, trading and corporate-event
-                    data. The objective of this project was to
-                    transform that raw information into a structured
-                    analytical platform that makes market and
-                    security-level analysis easier to explore.
+                    Every investor eventually asks the same question:
+                    which holdings are actually earning their risk?
+                    A headline return doesn't answer that — it can't
+                    distinguish a steady compounder from a security
+                    that got lucky on a volatile ride. Answering it
+                    properly requires pairing return with volatility,
+                    drawdown and benchmark context, at the same time,
+                    for every security in the portfolio.
 
                 </p>
 
                 <p>
 
-                    The resulting solution brings together historical
-                    prices, returns, volume, benchmark-relative
-                    performance, risk measures, dividends, stock
-                    splits and corporate events within an interactive
-                    Power BI environment.
+                    This project builds that analytical scaffolding
+                    from scratch: two decades of public price,
+                    volume and corporate-event history for 13
+                    securities spanning equities, ETFs and crypto,
+                    modeled into a single Power BI environment where
+                    performance, risk and benchmark comparisons update
+                    together as a user filters, rather than living in
+                    separate spreadsheets that never quite agree.
 
                 </p>
 
@@ -1848,6 +1911,131 @@
 
 
 <!-- =============================================================
+     KEY INSIGHTS
+============================================================= -->
+
+<section id="insights"
+         class="section-light">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-number">
+                03 · What the Data Reveals
+            </span>
+
+            <h2>
+                Numbers the dashboard surfaces, not headlines
+            </h2>
+
+            <p class="section-description">
+
+                Pulled directly from the live report — a sample of
+                what pairing return with risk, benchmark and
+                corporate-action context actually reveals once the
+                filters come off.
+
+            </p>
+
+        </div>
+
+
+        <div class="insights-grid">
+
+            <div class="insight-card">
+
+                <div class="insight-stat">
+                    74,829% vs. 778%
+                </div>
+
+                <div class="insight-label">
+                    NVDA vs. the S&amp;P 500 (SPY) since 2006
+                </div>
+
+                <p>
+                    NVIDIA's total return over the full period is
+                    roughly 96x the benchmark's gain across the same
+                    window — a gap that's easy to lose sight of on a
+                    raw price chart, which is why every security in
+                    this model carries a benchmark-relative measure
+                    alongside its own return.
+                </p>
+
+            </div>
+
+
+            <div class="insight-card">
+
+                <div class="insight-stat">
+                    0.81 Sharpe
+                </div>
+
+                <div class="insight-label">
+                    AAPL: 27.3% annualized return, -60.9% max drawdown
+                </div>
+
+                <p>
+                    A strong headline return and a brutal drawdown
+                    can both be true for the same security in the
+                    same window. The Security Analysis page pairs
+                    return with volatility and drawdown by design, so
+                    performance can't be judged on the upside alone.
+                </p>
+
+            </div>
+
+
+            <div class="insight-card">
+
+                <div class="insight-stat">
+                    3,431% vs. 554%
+                </div>
+
+                <div class="insight-label">
+                    Concentrated growth (SMH) vs. diversified income (SCHD)
+                </div>
+
+                <p>
+                    A sector-concentrated semiconductor ETF outgained
+                    a dividend-focused, diversified one by more than
+                    6x over the same 20 years — a real trade-off
+                    between growth and income that the dashboard lets
+                    a user compare side by side, not just assert.
+                </p>
+
+            </div>
+
+
+            <div class="insight-card">
+
+                <div class="insight-stat">
+                    57 dividends, 2 splits
+                </div>
+
+                <div class="insight-label">
+                    Corporate actions modeled for AAPL alone
+                </div>
+
+                <p>
+                    Total shareholder return is more than price
+                    appreciation — AAPL's history includes a 4-for-1
+                    split and 3.92% year-over-year dividend growth,
+                    both tracked explicitly rather than folded
+                    invisibly into a single price line.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =============================================================
      ARCHITECTURE
 ============================================================= -->
 
@@ -1858,7 +2046,7 @@
         <div class="section-heading">
 
             <span class="section-number">
-                03 · Technical Architecture
+                04 · Technical Architecture
             </span>
 
             <h2>
@@ -2013,7 +2201,7 @@
         <div class="section-heading">
 
             <span class="section-number">
-                04 · Methodology
+                05 · Methodology
             </span>
 
             <h2>
@@ -2156,7 +2344,7 @@
             <div class="skills-intro">
 
                 <span class="section-number">
-                    05 · Technology Stack
+                    06 · Technology Stack
                 </span>
 
                 <h2>
@@ -2315,7 +2503,7 @@
         <div class="section-heading">
 
             <span class="section-number">
-                06 · Problem Solving
+                07 · Problem Solving
             </span>
 
             <h2>
@@ -2327,7 +2515,8 @@
                 Building the dashboard involved more than
                 visualization. The project required solving
                 practical data, modeling and user-experience
-                challenges.
+                challenges — three of them are worth calling out
+                specifically.
 
             </p>
 
@@ -2344,14 +2533,17 @@
                 </span>
 
                 <h3>
-                    Dynamic Analysis
+                    Mixed-Calendar Assets
                 </h3>
 
                 <p>
 
-                    Users need to analyze different securities,
-                    periods and market dimensions without
-                    rebuilding the report for each scenario.
+                    The model spans equities and ETFs, which trade
+                    on a weekday market calendar, alongside BTC and
+                    ETH, which trade every day of the year — a
+                    naive daily-return calculation would misalign
+                    dates or silently distort volume and volatility
+                    comparisons across asset classes.
 
                 </p>
 
@@ -2365,14 +2557,17 @@
                 </span>
 
                 <h3>
-                    Dynamic Filters & Measures
+                    Calendar-Aware DAX Measures
                 </h3>
 
                 <p>
 
-                    Interactive filtering and DAX-based measures
-                    allow the analytical views to respond dynamically
-                    to user selections.
+                    Time-intelligence measures were built to
+                    normalize across trading calendars before
+                    computing returns, volatility and benchmark
+                    deltas — so a crypto asset and an equity ETF can
+                    sit on the same comparison chart without the
+                    comparison being misleading.
 
                 </p>
 
@@ -2382,19 +2577,22 @@
             <div class="challenge">
 
                 <span class="challenge-label">
-                    Design
+                    Challenge → Solution
                 </span>
 
                 <h3>
-                    Analytical Clarity
+                    Return vs. Risk-Adjusted Truth
                 </h3>
 
                 <p>
 
-                    The dashboard was organized into focused
-                    analytical views so users can move from
-                    market-level context to security-level
-                    analysis and corporate events.
+                    A raw return ranking (page 01) and a risk-adjusted
+                    view — Sharpe ratio, annualized volatility,
+                    maximum drawdown (page 02) — can rank the same
+                    securities in a different order. Rather than
+                    pick one framing, the dashboard keeps both
+                    visible side by side and lets the user reconcile
+                    them.
 
                 </p>
 
@@ -2422,7 +2620,7 @@
             <span class="section-number"
                   style="color:#bfdbfe;">
 
-                07 · Project Outcome
+                08 · Project Outcome
 
             </span>
 
@@ -2434,11 +2632,13 @@
 
                 The Investment Analytics Platform demonstrates how
                 public market data can be transformed into a
-                structured, interactive analytical product. The
-                project brings together financial knowledge,
-                data preparation, analytical modeling, DAX,
-                visualization and business intelligence into a
-                single workflow.
+                structured, interactive analytical product — one
+                that answers a genuine investing question (which
+                holdings are earning their risk?) rather than just
+                displaying numbers. The project brings together
+                financial knowledge, data preparation, analytical
+                modeling, DAX, visualization and business
+                intelligence into a single workflow.
 
             </p>
 
@@ -2446,19 +2646,19 @@
             <div class="outcome-points">
 
                 <div class="outcome-point">
-                    Market Performance Analysis
+                    13 securities, 20 years, one model
                 </div>
 
                 <div class="outcome-point">
-                    Security Risk & Return
+                    Return ranked alongside Sharpe &amp; drawdown
                 </div>
 
                 <div class="outcome-point">
-                    Benchmark Comparison
+                    Every security benchmarked, not just listed
                 </div>
 
                 <div class="outcome-point">
-                    Corporate Event Analysis
+                    57 dividends + 2 splits tracked for one ticker
                 </div>
 
             </div>
